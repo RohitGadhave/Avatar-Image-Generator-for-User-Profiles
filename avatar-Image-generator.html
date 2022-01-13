@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Image Generator for User Profiles - JavaScript & HTML</title>
+</head>
+<style>
+    .avatar {
+        border-radius: 50%;
+        padding: 10px;
+    }
+</style>
+
+<body>
+    <input type="number" placeholder="please enter count" id="count">
+    <button onclick="getAvatars()">Enter</button>
+    <div id="avatardiv"></div>
+</body>
+
+<script>
+    function generateAvatar(
+        text,
+        backgroundColor = "black",
+        foregroundColor = "white"
+    ) {
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        canvas.width = 200;
+        canvas.height = 200;
+
+        // Draw background
+        context.fillStyle = backgroundColor;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw text
+        context.font = "bold 100px Assistant";
+        context.fillStyle = foregroundColor;
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+        return canvas.toDataURL("image/png");
+    }
+
+    // document.getElementById("avatar").src = generateAvatar(
+    //     makeId(),
+    //     dynamicColor(),
+
+    //     "white"
+    // );
+    function makeId(length = 2) {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() *
+                charactersLength));
+        }
+        return result;
+    }
+    function createImgElement(src) {
+        let img = new Image();
+        img.src = src;
+        img.className = "avatar"
+        document.getElementById('avatardiv').appendChild(img);
+    }
+
+    function dynamicColor() {
+        return '#' + Math.floor(Math.random() * 16777215).toString(16);
+    }
+
+    function addImages(times = 5) {
+        for (let i = 0; i < times; i++) {
+            let src = generateAvatar(makeId(), dynamicColor());
+            // console.log(src);
+            createImgElement(src);
+        }
+    }
+
+    function getAvatars() {
+        let count = document.getElementById("count").value;
+        if (count)
+            addImages(count);
+    }
+    addImages()
+</script>
+
+</html>
